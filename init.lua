@@ -214,10 +214,41 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Filetree and Tab Keymaps
+vim.keymap.set('n', '<C-b>', '<cmd>Neotree toggle left<CR>', { desc = 'Toggle File Explorer' })
+
+vim.keymap.set('n', '<Tab>', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next Buffer Tab' })
+vim.keymap.set('n', '<S-Tab>', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Previous Buffer Tab' })
+vim.keymap.set('n', '<S-Right>', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next Tab' })
+vim.keymap.set('n', '<S-Left>', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Previous Tab' })
+
+vim.keymap.set('n', '<leader>v', '<cmd>vsplit<CR>', { desc = 'Split Window Vertically' })
+vim.keymap.set('n', '<leader>h', '<cmd>split<CR>', { desc = 'Split Window Horizontally' })
+
+vim.keymap.set('n', '<C-Left>', '<C-w>h', { desc = 'Focus left split' })
+vim.keymap.set('n', '<C-Right>', '<C-w>l', { desc = 'Focus right split' })
+vim.keymap.set('n', '<C-Up>', '<C-w>k', { desc = 'Focus upper split' })
+vim.keymap.set('n', '<C-Down>', '<C-w>j', { desc = 'Focus lower split' })
+
+vim.keymap.set('n', '<leader>x', function()
+  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  local file_count = 0
+  for _, buf in ipairs(buffers) do
+    if vim.bo[buf.bufnr].filetype ~= 'neo-tree' then
+      file_count = file_count + 1
+    end
+  end
+  if file_count <= 1 then vim.cmd('enew | bd #')
+  else vim.cmd('bp | bd #')
+  end
+end, { desc = 'Close current tab in a sane way' })
+
+
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
