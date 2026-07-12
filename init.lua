@@ -710,6 +710,16 @@ require('lazy').setup({
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
+
+      -- GDScript: Godot's editor *is* the language server (listens on 127.0.0.1:6005
+      -- while the Godot editor is open). No Mason package -- connect over TCP instead
+      -- of spawning a binary. Godot must be running for completion/definition to work.
+      vim.lsp.config('gdscript', {
+        cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(os.getenv 'GDScript_Port' or 6005)),
+        filetypes = { 'gd', 'gdscript', 'gdscript3' },
+        root_markers = { 'project.godot', '.git' },
+      })
+      vim.lsp.enable 'gdscript'
     end,
   },
 
